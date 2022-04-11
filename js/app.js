@@ -21,9 +21,21 @@ function agregarTweet(e) {
   if (tweet === "") {
     mostrarError("Un mensaje no puede ir vacio");
     return; // evita que se ejecuten más lineas de código
-  } else {
-    console.log(tweet);
   }
+
+  const tweetObj = {
+    id: Date.now(),
+    tweet,
+  };
+
+  // Añadir al arreglo de tweet
+  tweets = [...tweets, tweetObj];
+
+  // Una vez agregado vamos a crear el HTML
+  crearHTML();
+
+  // Reiniciar el formulario
+  formulario.reset();
 }
 
 //Mostrar mensaje de error
@@ -39,6 +51,30 @@ function mostrarError(error) {
   // Elimina el error del contenido después de 3 segundos
   setTimeout(() => {
     mensajeError.remove();
-  }),
-    3000;
+  }, 3000);
+}
+
+// Muestra un listado de los tweets
+function crearHTML() {
+  limpiarHTML();
+
+  if (tweets.length > 0) {
+    tweets.forEach((tweet) => {
+      // Crear el HTML
+      const li = document.createElement("li");
+
+      // Añadir el texto
+      li.innerText = tweet.tweet;
+
+      // insertarlo en el HTML
+      listaTweets.appendChild(li);
+    });
+  }
+}
+
+// Limpiar el HTML
+function limpiarHTML() {
+  while (listaTweets.firstChild) {
+    listaTweets.removeChild(listaTweets.firstChild);
+  }
 }
